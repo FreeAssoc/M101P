@@ -20,4 +20,3 @@ What is your favorite fruit?
 </form>
 </body>
 </html>
-
