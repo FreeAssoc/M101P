@@ -20,6 +20,8 @@ def main():
   print doc
   print "inserting again"
 
+  doc = {'firstname':'Andrew', 'lastname':'Erlichson'}
+ 
   try:
     users.insert(doc)
   except:
