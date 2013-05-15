@@ -7,13 +7,14 @@
 # clean everything up
 echo "killing mongod and mongos"
 killall mongod
-killall monogs
+killall mongos
 echo "removing data files"
 rm -rf /data/config
 rm -rf /data/shard*
+rm *log* # added
 
 
-# start a replica set and tell it that it will be a shord0
+# start a replica set and tell it that it will be shard0
 mkdir -p /data/shard0/rs0 /data/shard0/rs1 /data/shard0/rs2
 mongod --replSet s0 --logpath "s0-r0.log" --dbpath /data/shard0/rs0 --port 37017 --fork --shardsvr --smallfiles
 mongod --replSet s0 --logpath "s0-r1.log" --dbpath /data/shard0/rs1 --port 37018 --fork --shardsvr --smallfiles
@@ -70,7 +71,8 @@ mongod --logpath "cfg-c.log" --dbpath /data/config/config-c --port 57042 --fork 
 
 
 # now start the mongos on a standard port
-mongos --logpath "mongos-1.log" --configdb localhost:57040,localhost:57041,localhost:57042 --fork
+# I added the port explicity here
+mongos --logpath "mongos-1.log" --port 27017 --configdb localhost:57040,localhost:57041,localhost:57042 --fork
 echo "Waiting 60 seconds for the replica sets to fully come online"
 sleep 60
 echo "Connnecting to mongos and enabling sharding"
